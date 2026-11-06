@@ -499,7 +499,8 @@ function applyDarkMode(on) {
   localStorage.setItem('vta_dark_mode', on ? '1' : '0');
 }
 document.getElementById('darkToggle').addEventListener('click', () => applyDarkMode(!document.body.classList.contains('dark-mode')));
-applyDarkMode(localStorage.getItem('vta_dark_mode') === '1');
+// Dark is the default theme; only an explicit choice of light ('0') turns it off.
+applyDarkMode(localStorage.getItem('vta_dark_mode') !== '0');
 
 // ========== SEARCH ==========
 // Global autocomplete over assignments + exams. Data is fetched once per session (role-scoped by
