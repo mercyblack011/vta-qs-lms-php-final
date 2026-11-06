@@ -3,6 +3,11 @@
 // Creates the local database if missing, applies schema.sql, and seeds demo data
 // only if the users table is empty (mirrors src/seed.js's guard).
 
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit("setup.php can only be run from the command line.\n");
+}
+
 require __DIR__ . '/api/lib/db.php';
 
 $host = env('DB_HOST', '127.0.0.1');

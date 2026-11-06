@@ -1,2 +1,22 @@
+# Local configuration and secrets
 .env
+
+# User uploads (created at runtime)
 /uploads/
+
+# Logs and caches
+*.log
+.phpunit.result.cache
+
+# Dependencies
+/vendor/
+/node_modules/
+package-lock.json
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
