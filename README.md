@@ -37,6 +37,12 @@ A learning management system for a Quantity Surveying (NVQ) class: courses, atte
 
 <p align="center"><img src="docs/screenshots/mobile-dashboard.png" alt="Dashboard on a phone" width="280"></p>
 
+## Research document
+
+[**docs/Research-Document.pdf**](docs/Research-Document.pdf) describes every function of the system with screenshots, the architecture, the data model, business rules, security, the full API and known limitations. It is written for anyone researching or writing about the system.
+
+The PDF is generated from [docs/research/research-document.html](docs/research/research-document.html). After editing the HTML, rebuild it with `node docs/research/build-pdf.mjs` (needs Node.js 22+ and Chrome or Edge).
+
 ## Tech stack
 
 - **Backend:** plain PHP with PDO, no framework and no Composer packages

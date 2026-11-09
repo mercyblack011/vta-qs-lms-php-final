@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VTA QS LMS Research Document</title>
+<meta name="author" content="VTA QS LMS project">
+<meta name="description" content="Functional and technical description of the VTA QS LMS learning management system, for researchers.">
+<style>
+  @page { size: A4; margin: 18mm 17mm 20mm; }
+  :root {
+    --ink: #17171C; --muted: #5B5B66; --line: #DEDEE4; --soft: #F5F5F8;
+    --accent: #B3184A; --accent-soft: #FBEAF0; --code: #2A2A33;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; color: var(--ink); background: #fff; font: 10.2pt/1.55 "Segoe UI", Inter, Arial, sans-serif; }
+  h1, h2, h3, h4 { line-height: 1.25; margin: 0; break-after: avoid; }
+  h2 { font-size: 17pt; margin: 0 0 10pt; padding-top: 2pt; color: var(--ink); }
+  h2 .n { color: var(--accent); margin-right: 8pt; }
+  h3 { font-size: 12pt; margin: 13pt 0 4pt; }
+  h4 { font-size: 10.4pt; margin: 10pt 0 3pt; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; font-size: 8.4pt; }
+  p { margin: 0 0 7pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin: 0 0 2.5pt; }
+  code { font: 8.8pt/1.4 Consolas, "Cascadia Mono", monospace; background: var(--soft); padding: 0 3pt; border-radius: 3pt; color: var(--code); }
+  a { color: var(--accent); text-decoration: none; }
+  section.chapter { break-before: page; }
+  .lead { font-size: 11pt; color: #33333C; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 8.9pt; break-inside: auto; }
+  th, td { text-align: left; vertical-align: top; padding: 3.8pt 6pt; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; font-size: 8.2pt; text-transform: uppercase; letter-spacing: .03em; color: #3A3A44; }
+  tr { break-inside: avoid; }
+  td code { font-size: 8.2pt; }
+  .yes { color: #157347; font-weight: 600; }
+  .ro { color: #8A6100; font-weight: 600; }
+  .no { color: #A0A0AA; }
+  figure { margin: 8pt 0 12pt; break-inside: avoid; }
+  figure img { display: block; width: 100%; border: 1px solid var(--line); border-radius: 6pt; }
+  figure.narrow img { width: 80%; margin: 0 auto; }
+  figure.narrow figcaption { width: 80%; margin-left: auto; margin-right: auto; }
+  figcaption { font-size: 8.6pt; color: var(--muted); margin-top: 4pt; }
+  figcaption b { color: var(--ink); }
+  .phones { display: flex; gap: 14pt; justify-content: center; }
+  .phones img { width: 46mm; border-radius: 8pt; }
+  .note { border-left: 3pt solid var(--accent); background: var(--accent-soft); padding: 6pt 9pt; margin: 6pt 0 10pt; border-radius: 0 5pt 5pt 0; font-size: 9.4pt; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16pt; }
+  .kv { display: grid; grid-template-columns: 34mm 1fr; gap: 2pt 10pt; margin: 4pt 0 10pt; font-size: 9.4pt; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  .module-head { display: flex; align-items: baseline; gap: 8pt; margin: 16pt 0 4pt; break-after: avoid; }
+  .module-head h3 { margin: 0; }
+  .roles { font-size: 8pt; color: var(--muted); }
+  .tag { display: inline-block; font-size: 7.6pt; font-weight: 600; padding: 1pt 5pt; border-radius: 8pt; background: var(--soft); border: 1px solid var(--line); margin-right: 3pt; color: #3A3A44; }
+  .avoid { break-inside: avoid; }
+
+  /* Cover */
+  .cover { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover .top img { width: 64mm; }
+  .cover .eyebrow { font-size: 9pt; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 8pt; }
+  .cover h1 { font-size: 34pt; letter-spacing: -.01em; margin-bottom: 8pt; }
+  .cover .sub { font-size: 13pt; color: #3A3A44; max-width: 135mm; }
+  .cover .hero { border-radius: 8pt; border: 1px solid var(--line); width: 100%; display: block; }
+  .cover .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10pt; font-size: 8.8pt; border-top: 1px solid var(--line); padding-top: 10pt; }
+  .cover .meta b { display: block; font-size: 7.6pt; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; margin-bottom: 2pt; }
+
+  /* Contents */
+  .toc { list-style: none; padding: 0; margin: 4pt 0 0; font-size: 10.2pt; }
+  .toc li { display: flex; gap: 8pt; padding: 5pt 0; border-bottom: 1px dotted var(--line); margin: 0; }
+  .toc .n { color: var(--accent); width: 8mm; font-weight: 700; }
+  .toc small { color: var(--muted); margin-left: auto; font-size: 8.6pt; }
+  svg text { font-family: "Segoe UI", Inter, Arial, sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="top"><img src="../../log.webp" alt="Tech Class logo"></div>
+  <div>
+    <div class="eyebrow">Research document · System description</div>
+    <h1>VTA QS LMS</h1>
+    <p class="sub">A web-based learning management system for a Quantity Surveying (NVQ Level 5) class: what it does, how it is built, and how each function behaves.</p>
+  </div>
+  <img class="hero" src="images/dashboard-admin.jpg" alt="Admin dashboard">
+  <div class="meta">
+    <div><b>Document version</b>1.0</div>
+    <div><b>Date</b>November 2026</div>
+    <div><b>App release</b>Web, Android v1.8</div>
+    <div><b>Source</b>github.com/mercyblack011/<br>vta-qs-lms-php-final</div>
+  </div>
+</section>
+
+<!-- ============ CONTENTS ============ -->
+<section class="chapter">
+  <h2>Contents</h2>
+  <ol class="toc">
+    <li><span class="n">1</span>Introduction and purpose<small>Scope, context, how to cite</small></li>
+    <li><span class="n">2</span>Users and roles<small>Three roles and what each can do</small></li>
+    <li><span class="n">3</span>System architecture<small>Components, request flow, technology</small></li>
+    <li><span class="n">4</span>Data model<small>22 tables and how they relate</small></li>
+    <li><span class="n">5</span>Functional modules<small>Every screen, with figures</small></li>
+    <li><span class="n">6</span>Business rules<small>Validation, deadlines, scoping, grading</small></li>
+    <li><span class="n">7</span>Security and privacy<small>Authentication, uploads, data protection</small></li>
+    <li><span class="n">8</span>API reference<small>All HTTP endpoints</small></li>
+    <li><span class="n">9</span>Interface, mobile and Android app<small>Theme, responsive layout, APK</small></li>
+    <li><span class="n">10</span>Limitations and future work<small>Known gaps found in the code</small></li>
+    <li><span class="n">11</span>Glossary and document maintenance<small>Terms, updating this PDF</small></li>
+  </ol>
+
+  <div class="note" style="margin-top:18pt">
+    <b>About the figures.</b> All screenshots were taken from a working installation on 9 November 2026 in the default dark theme. Real names of students and lecturers were replaced with labels such as "Student 1" and "Lecturer A", and uploaded photographs were blurred. Demo and test records are shown as they are.
+  </div>
+</section>
+
+<!-- ============ 1. INTRODUCTION ============ -->
+<section class="chapter">
+  <h2><span class="n">1</span>Introduction and purpose</h2>
+  <p class="lead">VTA QS LMS (shown to users as <b>Tech Class</b>) is a learning management system built for the Quantity Surveyor course at a vocational training centre in Nintavur, Sri Lanka. The interface names the centre as "DVTC · Nintavur" on the daily diary and "VTA Ninthavur" on the attendance sheet.</p>
+  <p>The system replaces paper records and scattered messaging with one place for course content, attendance, the instructor's daily diary, assignments, exam paper collection, results, announcements, job listings and events. It runs in a web browser and as an Android app.</p>
+
+  <h3>1.1 Purpose of this document</h3>
+  <p>This document is written for researchers, students and evaluators who want to study, cite or compare the system. It describes every function from the user's side and explains the rules the server enforces, with a figure for each screen. Statements about behaviour are based on the source code in the repository at the version listed on the cover.</p>
+
+  <h3>1.2 Scope</h3>
+  <dl class="kv">
+    <dt>In scope</dt><dd>The web application (frontend and API), its database schema, the setup script and the Android download page.</dd>
+    <dt>Out of scope</dt><dd>The Android app's native source code (only the built APK is in the repository), hosting configuration and any data held in a live installation.</dd>
+    <dt>Course context</dt><dd>Quantity Surveyor, NVQ-05, full time, 12 months. Semester 1 modules: Measurements (1020), Maths (2050). Semester 2 modules: Estimations (4050), Law (9020). The system also supports other courses, for example a part-time, non-NVQ Surveying &amp; Leveling course.</dd>
+  </dl>
+
+  <h3>1.3 Summary of capabilities</h3>
+  <table>
+    <tr><th style="width:28%">Area</th><th>Functions</th></tr>
+    <tr><td>Academic administration</td><td>Courses with semester module lists, student and lecturer records, batches by year, weekly timetable</td></tr>
+    <tr><td>Daily operations</td><td>Monthly attendance grid with Excel export, instructor's daily diary with printable PDF output</td></tr>
+    <tr><td>Assessment</td><td>Assignments with timed submission windows, exam paper upload portal, grading with feedback, module results matrix</td></tr>
+    <tr><td>Learning resources</td><td>Notes and past papers as PDFs with in-app preview</td></tr>
+    <tr><td>Community</td><td>Announcements with replies, career listings, events with photos and PDF</td></tr>
+    <tr><td>Access</td><td>Three roles, session login, profile and password change, global search, dark and light themes, Android app</td></tr>
+  </table>
+
+  <h3>1.4 How to cite</h3>
+  <p>Suggested reference format:</p>
+  <p style="font-size:9.4pt;padding:7pt 10pt;background:var(--soft);border-radius:5pt">VTA QS LMS project (2026). <i>VTA QS LMS: Research document, version 1.0</i>. Source code: https://github.com/mercyblack011/vta-qs-lms-php-final</p>
+  <p style="font-size:9.2pt">When citing a specific behaviour, add the commit hash of the version you studied; the system is still changing.</p>
+</section>
+
+<!-- ============ 2. ROLES ============ -->
+<section class="chapter">
+  <h2><span class="n">2</span>Users and roles</h2>
+  <p>Every account has exactly one role, stored in <code>users.role</code>. The role decides which menu items appear and which API actions the server allows.</p>
+
+  <div class="grid2 avoid">
+    <div>
+      <h3>Admin</h3>
+      <p>Runs the system. Creates courses, students, lecturers and events, edits the timetable, marks attendance and writes the daily diary. Can manage any assignment, exam, file or announcement.</p>
+    </div>
+    <div>
+      <h3>Instructor (lecturer)</h3>
+      <p>Teaches one or more modules. Creates assignments and exams, uploads notes and past papers, grades submissions and posts announcements, but only for the course and modules they are assigned to.</p>
+    </div>
+  </div>
+  <h3>Student</h3>
+  <p>Belongs to one batch (for example 2026) and is enrolled in a course. Views course material, the timetable, their own attendance and the diary; submits assignments and exam papers; sees their own marks and feedback.</p>
+
+  <h3>2.1 Access matrix</h3>
+  <p><span class="yes">Full</span> means create, edit and delete. <span class="ro">View</span> means read only. Where access is limited to the user's own course or modules, the cell says so.</p>
+  <table>
+    <tr><th style="width:24%">Screen</th><th>Admin</th><th>Instructor</th><th>Student</th></tr>
+    <tr><td>Dashboard</td><td class="yes">Full overview</td><td class="yes">Teaching overview</td><td class="yes">Personal overview</td></tr>
+    <tr><td>Courses</td><td class="yes">Full ("All Courses")</td><td class="ro">View own ("My Courses")</td><td class="ro">View enrolled and catalogue</td></tr>
+    <tr><td>Students</td><td class="yes">Full</td><td class="ro">View, filter by course and batch</td><td class="ro">View classmates</td></tr>
+    <tr><td>Lecturers</td><td class="yes">Full</td><td class="ro">View same course</td><td class="ro">View same course</td></tr>
+    <tr><td>Timetable</td><td class="yes">Full</td><td class="ro">View</td><td class="ro">View</td></tr>
+    <tr><td>Attendance</td><td class="yes">Full</td><td class="no">Not in menu</td><td class="ro">View own course grid</td></tr>
+    <tr><td>Daily diary</td><td class="yes">Full</td><td class="no">Not in menu</td><td class="ro">View</td></tr>
+    <tr><td>Assignments</td><td class="yes">Full</td><td class="yes">Full, own modules</td><td class="yes">View and submit</td></tr>
+    <tr><td>Exams</td><td class="yes">Full</td><td class="yes">Full, own modules</td><td class="yes">View and upload paper</td></tr>
+    <tr><td>Results</td><td class="ro">View all</td><td class="ro">View own modules</td><td class="ro">View own marks</td></tr>
+    <tr><td>Notes, past papers</td><td class="yes">Full</td><td class="yes">Upload, own modules</td><td class="ro">View and download</td></tr>
+    <tr><td>Announcements</td><td class="yes">Full</td><td class="yes">Post, edit own</td><td class="ro">Read and reply</td></tr>
+    <tr><td>Career</td><td class="yes">Full</td><td class="yes">Post and remove</td><td class="ro">View</td></tr>
+    <tr><td>Events</td><td class="yes">Full</td><td class="ro">View</td><td class="ro">View</td></tr>
+    <tr><td>Profile</td><td class="yes">Own</td><td class="yes">Own</td><td class="yes">Own</td></tr>
+  </table>
+  <p style="font-size:9pt;color:var(--muted)">The menu hides Attendance and Daily Diary from instructors, but the API would accept attendance and diary writes from an instructor account. Section 10 lists this as a point to review.</p>
+</section>
+
+<!-- ============ 3. ARCHITECTURE ============ -->
+<section class="chapter">
+  <h2><span class="n">3</span>System architecture</h2>
+  <p>The system is a classic three-tier web application: a single-page browser client, a PHP JSON API and a MySQL database. It has no framework and no build step, which keeps installation to copying files and running one setup script.</p>
+
+  <figure>
+    <svg viewBox="0 0 680 330" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture diagram">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5B5B66"/></marker>
+      </defs>
+      <!-- clients -->
+      <rect x="10" y="40" width="150" height="62" rx="8" fill="#FBEAF0" stroke="#B3184A"/>
+      <text x="85" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#17171C">Web browser</text>
+      <text x="85" y="84" text-anchor="middle" font-size="10" fill="#5B5B66">index.html · app.js · style.css</text>
+      <rect x="10" y="130" width="150" height="62" rx="8" fill="#FBEAF0" stroke="#B3184A"/>
+      <text x="85" y="156" text-anchor="middle" font-size="13" font-weight="700" fill="#17171C">Android app</text>
+      <text x="85" y="174" text-anchor="middle" font-size="10" fill="#5B5B66">Tech Class APK v1.8</text>
+      <!-- apache -->
+      <rect x="215" y="20" width="200" height="290" rx="10" fill="#F5F5F8" stroke="#DEDEE4"/>
+      <text x="315" y="42" text-anchor="middle" font-size="12" font-weight="700" fill="#17171C">Apache + PHP</text>
+      <rect x="232" y="56" width="166" height="42" rx="6" fill="#fff" stroke="#DEDEE4"/>
+      <text x="315" y="74" text-anchor="middle" font-size="11" font-weight="600">.htaccess</text>
+      <text x="315" y="89" text-anchor="middle" font-size="9.5" fill="#5B5B66">rewrite /api/* · deny .env</text>
+      <rect x="232" y="110" width="166" height="42" rx="6" fill="#fff" stroke="#DEDEE4"/>
+      <text x="315" y="128" text-anchor="middle" font-size="11" font-weight="600">api/index.php</text>
+      <text x="315" y="143" text-anchor="middle" font-size="9.5" fill="#5B5B66">router: /api/&lt;resource&gt;</text>
+      <rect x="232" y="164" width="166" height="42" rx="6" fill="#fff" stroke="#DEDEE4"/>
+      <text x="315" y="182" text-anchor="middle" font-size="11" font-weight="600">api/routes/*.php</text>
+      <text x="315" y="197" text-anchor="middle" font-size="9.5" fill="#5B5B66">17 resource handlers</text>
+      <rect x="232" y="218" width="166" height="76" rx="6" fill="#fff" stroke="#DEDEE4"/>
+      <text x="315" y="236" text-anchor="middle" font-size="11" font-weight="600">api/lib</text>
+      <text x="315" y="252" text-anchor="middle" font-size="9.5" fill="#5B5B66">auth.php · sessions, roles</text>
+      <text x="315" y="266" text-anchor="middle" font-size="9.5" fill="#5B5B66">db.php · PDO queries</text>
+      <text x="315" y="280" text-anchor="middle" font-size="9.5" fill="#5B5B66">upload.php · file checks</text>
+      <!-- data -->
+      <rect x="480" y="60" width="185" height="78" rx="8" fill="#EAF4EE" stroke="#157347"/>
+      <text x="572" y="88" text-anchor="middle" font-size="13" font-weight="700">MySQL / MariaDB</text>
+      <text x="572" y="106" text-anchor="middle" font-size="10" fill="#5B5B66">database vta_lms</text>
+      <text x="572" y="121" text-anchor="middle" font-size="10" fill="#5B5B66">22 tables (schema.sql)</text>
+      <rect x="480" y="190" width="185" height="78" rx="8" fill="#FFF6E5" stroke="#B07A00"/>
+      <text x="572" y="218" text-anchor="middle" font-size="13" font-weight="700">uploads/ folder</text>
+      <text x="572" y="236" text-anchor="middle" font-size="10" fill="#5B5B66">PDFs, photos, submissions</text>
+      <text x="572" y="251" text-anchor="middle" font-size="10" fill="#5B5B66">served as static files</text>
+      <!-- arrows -->
+      <path d="M160 71 H228" stroke="#5B5B66" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+      <path d="M160 161 C195 161 195 131 228 131" stroke="#5B5B66" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+      <text x="166" y="62" font-size="9" fill="#5B5B66">HTTPS, JSON</text>
+      <path d="M315 98 V106" stroke="#5B5B66" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M315 152 V160" stroke="#5B5B66" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M315 206 V214" stroke="#5B5B66" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M398 245 C440 245 440 100 476 100" stroke="#157347" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+      <path d="M398 270 C440 270 440 229 476 229" stroke="#B07A00" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+      <text x="420" y="160" font-size="9" fill="#157347" transform="rotate(-90 420 160)">SQL</text>
+    </svg>
+    <figcaption><b>Figure 1.</b> Components and request flow. The browser and the Android app call the same JSON API.</figcaption>
+  </figure>
+
+  <h3>3.1 Technology</h3>
+  <table>
+    <tr><th style="width:24%">Layer</th><th>Technology</th><th style="width:38%">Notes</th></tr>
+    <tr><td>Client</td><td>HTML, CSS, vanilla JavaScript (about 3,900 lines in <code>js/app.js</code>)</td><td>Single page; each menu item swaps a section and calls a render function</td></tr>
+    <tr><td>PDF viewing</td><td>PDF.js 3.11.174, loaded from cdnjs on first use</td><td>Used to preview assignments, notes and papers in the app</td></tr>
+    <tr><td>Server</td><td>PHP 8 (tested on 8.0.30), no Composer packages</td><td>Uses PDO, <code>finfo</code>, <code>password_hash</code></td></tr>
+    <tr><td>Web server</td><td>Apache with <code>mod_rewrite</code></td><td>Development setup uses XAMPP on Windows</td></tr>
+    <tr><td>Database</td><td>MySQL or MariaDB, InnoDB, utf8mb4</td><td>Foreign keys with cascade rules</td></tr>
+    <tr><td>Mobile</td><td>Android APK, version 1.8, Android 7.0 or newer</td><td>Downloaded from <code>download.html</code></td></tr>
+  </table>
+
+  <h3>3.2 Request lifecycle</h3>
+  <ol>
+    <li>The client calls <code>/api/&lt;resource&gt;/&lt;segments&gt;</code> with <code>fetch</code>. JSON bodies are used for plain data and <code>multipart/form-data</code> when a file is attached.</li>
+    <li><code>.htaccess</code> rewrites every <code>/api/*</code> path to <code>api/index.php</code>.</li>
+    <li><code>api/index.php</code> loads the shared libraries, starts the session, reads the method, and loads <code>api/routes/&lt;resource&gt;.php</code>. Only alphabetic resource names are accepted. A <code>POST</code> carrying a <code>_method</code> field is treated as <code>PUT</code> or <code>PATCH</code>, because PHP does not parse uploaded files on native <code>PUT</code> requests.</li>
+    <li>The route file matches the method and path segments, checks the session with <code>require_auth()</code> and the role with <code>require_role()</code>, validates input and runs prepared SQL statements.</li>
+    <li>The response is JSON. Errors are returned as <code>{"error": "message"}</code> with an HTTP status (400, 401, 403, 404, 409 or 500). Unexpected exceptions are logged on the server and shown to the client only as "Internal server error".</li>
+  </ol>
+
+  <h3>3.3 Source layout</h3>
+  <table>
+    <tr><th style="width:34%">Path</th><th>Contents</th></tr>
+    <tr><td><code>index.html</code></td><td>App shell: login screen, sidebar, every page section, all modal forms, SVG icon set</td></tr>
+    <tr><td><code>js/app.js</code></td><td>API helper, navigation, rendering for every page, search, attendance Excel writer, diary print builder</td></tr>
+    <tr><td><code>css/style.css</code></td><td>Design tokens, light and dark themes, responsive rules, print rules</td></tr>
+    <tr><td><code>api/index.php</code></td><td>Router</td></tr>
+    <tr><td><code>api/lib/</code></td><td><code>bootstrap.php</code>, <code>db.php</code> (env loading, PDO), <code>auth.php</code>, <code>response.php</code>, <code>upload.php</code></td></tr>
+    <tr><td><code>api/routes/</code></td><td>admin, assignments, attendance, auth, career, certificates, courses, diary, events, exams, forum, lecturers, lectures, resources, results, students, timetable</td></tr>
+    <tr><td><code>schema.sql</code>, <code>setup.php</code></td><td>Database schema; command-line script that creates the database and demo data</td></tr>
+  </table>
+</section>
+
+<!-- ============ 4. DATA MODEL ============ -->
+<section class="chapter">
+  <h2><span class="n">4</span>Data model</h2>
+  <p>The database has 22 tables. A <code>users</code> row is a login account. People records (<code>students</code>, <code>lecturers</code>) are separate and may link to an account through <code>user_id</code>, which lets the admin keep a student on the class list before they have a login.</p>
+
+  <figure>
+    <svg viewBox="0 0 680 400" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Entity relationship overview">
+      <defs><marker id="er" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8A8A94"/></marker></defs>
+      <g font-size="10.5">
+        <!-- central -->
+        <rect x="270" y="20" width="140" height="34" rx="6" fill="#FBEAF0" stroke="#B3184A"/><text x="340" y="42" text-anchor="middle" font-weight="700">users</text>
+        <rect x="270" y="190" width="140" height="34" rx="6" fill="#FBEAF0" stroke="#B3184A"/><text x="340" y="212" text-anchor="middle" font-weight="700">courses</text>
+        <!-- people -->
+        <rect x="20" y="90" width="120" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="80" y="110" text-anchor="middle">students</text>
+        <rect x="540" y="90" width="120" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="600" y="110" text-anchor="middle">lecturers</text>
+        <rect x="280" y="105" width="120" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="340" y="125" text-anchor="middle">enrollments</text>
+        <rect x="160" y="140" width="100" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="210" y="160" text-anchor="middle">certificates</text>
+        <!-- student side -->
+        <rect x="10" y="175" width="88" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="54" y="195" text-anchor="middle">attendance</text>
+        <rect x="104" y="185" width="62" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="135" y="205" text-anchor="middle">results</text>
+        <!-- course side -->
+        <rect x="150" y="270" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="205" y="290" text-anchor="middle">assignments</text>
+        <rect x="150" y="340" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="205" y="360" text-anchor="middle">submissions</text>
+        <rect x="285" y="270" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="340" y="290" text-anchor="middle">exams</text>
+        <rect x="285" y="340" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="340" y="360" text-anchor="middle">exam_submissions</text>
+        <rect x="420" y="270" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="475" y="290" text-anchor="middle">resources</text>
+        <rect x="420" y="225" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="475" y="245" text-anchor="middle">timetables</text>
+        <rect x="550" y="225" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="605" y="245" text-anchor="middle">lectures</text>
+        <rect x="550" y="270" width="110" height="30" rx="6" fill="#fff" stroke="#8A8A94"/><text x="605" y="290" text-anchor="middle">diary_entries</text>
+        <!-- standalone -->
+        <rect x="430" y="20" width="110" height="30" rx="6" fill="#F5F5F8" stroke="#C9C9D1"/><text x="485" y="40" text-anchor="middle">forum_threads</text>
+        <rect x="560" y="20" width="110" height="30" rx="6" fill="#F5F5F8" stroke="#C9C9D1"/><text x="615" y="40" text-anchor="middle">forum_replies</text>
+        <rect x="20" y="20" width="80" height="30" rx="6" fill="#F5F5F8" stroke="#C9C9D1"/><text x="60" y="40" text-anchor="middle">jobs</text>
+        <rect x="20" y="290" width="100" height="30" rx="6" fill="#F5F5F8" stroke="#C9C9D1"/><text x="70" y="310" text-anchor="middle">events</text>
+        <rect x="20" y="345" width="100" height="30" rx="6" fill="#F5F5F8" stroke="#C9C9D1"/><text x="70" y="365" text-anchor="middle">event_photos</text>
+      </g>
+      <g stroke="#8A8A94" stroke-width="1.3" fill="none" marker-end="url(#er)">
+        <path d="M140 100 C200 80 230 45 266 40"/>
+        <path d="M540 100 C480 80 450 45 414 40"/>
+        <path d="M340 105 V58"/>
+        <path d="M340 135 V186"/>
+        <path d="M260 155 C300 150 300 70 300 58"/>
+        <path d="M54 175 V124"/>
+        <path d="M128 185 V124"/>
+        <path d="M205 270 C220 240 260 215 266 212"/>
+        <path d="M205 340 V304"/>
+        <path d="M340 270 V228"/>
+        <path d="M340 340 V304"/>
+        <path d="M420 285 C404 284 404 228 414 221"/>
+        <path d="M475 225 C450 215 420 210 414 208"/>
+        <path d="M605 225 C560 210 440 205 414 204"/>
+        <path d="M550 285 H540 V219 H414"/>
+        <path d="M600 120 C560 160 430 190 414 200"/>
+        <path d="M560 35 H544"/>
+        <path d="M70 345 V324"/>
+      </g>
+    </svg>
+    <figcaption><b>Figure 2.</b> Main relationships. Arrows point from the referencing table to the referenced table. Grey boxes are stand-alone features. Author and owner links to <code>users</code> (for example <code>assignments.instructor_id</code>) are left out to keep the diagram readable.</figcaption>
+  </figure>
+
+  <h3>4.1 Tables</h3>
+  <table>
+    <tr><th style="width:22%">Table</th><th>Holds</th><th style="width:34%">Key fields and constraints</th></tr>
+    <tr><td><code>users</code></td><td>Login accounts</td><td>unique <code>email</code>, bcrypt <code>password_hash</code>, <code>role</code> = student / instructor / admin</td></tr>
+    <tr><td><code>courses</code></td><td>Courses</td><td><code>study_mode</code> (Full Time, Part Time), <code>qualification_type</code> (NVQ-05, Non-NVQ), JSON module lists per semester, <code>duration</code> in months</td></tr>
+    <tr><td><code>enrollments</code></td><td>Account to course link</td><td>unique (user, course), <code>progress</code> 0 to 100</td></tr>
+    <tr><td><code>certificates</code></td><td>Course completion certificates</td><td>unique <code>cert_code</code> such as <code>VTA-QS-1A2B3C4D</code></td></tr>
+    <tr><td><code>students</code></td><td>Class list</td><td><code>nic</code>, <code>mis_no</code>, <code>batch</code>, photo, optional <code>user_id</code></td></tr>
+    <tr><td><code>lecturers</code></td><td>Teaching staff</td><td><code>lecturer_id</code> (e.g. LEC-01), <code>course_id</code>, JSON list of modules taught</td></tr>
+    <tr><td><code>attendance</code></td><td>One mark per student per day</td><td>unique (student, date), <code>status</code> P / A / L, <code>marked_by</code></td></tr>
+    <tr><td><code>diary_entries</code></td><td>Instructor's daily diary</td><td>date, week, month, batch, JSON <code>slots</code>, remarks, T/O signature</td></tr>
+    <tr><td><code>timetables</code></td><td>Weekly timetable</td><td>one per course, JSON schedule of 5 days by 4 periods</td></tr>
+    <tr><td><code>lectures</code></td><td>Scheduled lecture records</td><td>course, instructor, title, <code>scheduled_at</code></td></tr>
+    <tr><td><code>assignments</code></td><td>Assignment briefs</td><td>course, module, batch, <code>start_at</code>, <code>end_at</code>, optional PDF</td></tr>
+    <tr><td><code>submissions</code></td><td>Student assignment work</td><td>unique (assignment, student), file, <code>grade</code>, <code>feedback</code></td></tr>
+    <tr><td><code>exams</code></td><td>Exam upload windows</td><td>course, module, batch, <code>start_at</code>, <code>end_at</code></td></tr>
+    <tr><td><code>exam_submissions</code></td><td>Uploaded exam papers</td><td>unique (exam, student), file, grade, feedback</td></tr>
+    <tr><td><code>results</code></td><td>Older four-subject mark sheet</td><td>one row per student: measurement, estimation, contracts, cad</td></tr>
+    <tr><td><code>resources</code></td><td>Notes and past papers</td><td><code>type</code> notes / past_paper, course, module, unit name, PDF</td></tr>
+    <tr><td><code>forum_threads</code>, <code>forum_replies</code></td><td>Announcements and replies</td><td>title, body, author</td></tr>
+    <tr><td><code>jobs</code></td><td>Career listings</td><td><code>type</code> Internship / Vacancy, location, closing date</td></tr>
+    <tr><td><code>events</code>, <code>event_photos</code></td><td>Events</td><td>name, place, person in charge, date, optional PDF, many photos</td></tr>
+  </table>
+  <p>Deleting a course, assignment, exam, event or thread removes its dependent rows through <code>ON DELETE CASCADE</code>. Deleting a user who authored content keeps the content where the column allows <code>SET NULL</code> (for example <code>attendance.marked_by</code>).</p>
+</section>
+
+<!-- ============ 5. MODULES ============ -->
+<section class="chapter">
+  <h2><span class="n">5</span>Functional modules</h2>
+  <p>This chapter walks through every screen in menu order. Each part says who uses it, what it does and which rules apply.</p>
+
+  <div class="module-head"><h3>5.1 Login and session</h3><span class="roles">All roles</span></div>
+  <p>Users sign in with email and password. The password field has a show and hide toggle. On success the server stores the user's id, name, email and role in a PHP session and issues a new session id. The client keeps a copy of the user object to draw the interface and calls <code>/api/auth/me</code> to confirm the session is still valid. Logging out destroys the session on the server.</p>
+  <figure>
+    <img src="images/login.jpg" alt="Login screen">
+    <figcaption><b>Figure 3.</b> Login screen.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.2 Dashboard</h3><span class="roles">All roles, different content</span></div>
+  <p>The dashboard greets the user by time of day and shows four summary cards, recent uploads, quick-action buttons and the latest announcements. The cards change by role:</p>
+  <ul>
+    <li><b>Admin:</b> total students, lecturers, courses and events (Figure 4).</li>
+    <li><b>Instructor:</b> students in the current batch, assignments, lecturers on the same course and exams (Figure 5).</li>
+    <li><b>Student:</b> enrolled course, classmates, lecturers and this month's attendance rate (Figure 6).</li>
+  </ul>
+  <figure>
+    <img src="images/dashboard-admin.jpg" alt="Admin dashboard">
+    <figcaption><b>Figure 4.</b> Admin dashboard with the full sidebar menu.</figcaption>
+  </figure>
+  <figure class="narrow">
+    <img src="images/dashboard-instructor.jpg" alt="Instructor dashboard">
+    <figcaption><b>Figure 5.</b> Instructor dashboard. Attendance and Daily Diary are not in the instructor's menu.</figcaption>
+  </figure>
+  <figure class="narrow">
+    <img src="images/dashboard-student.jpg" alt="Student dashboard">
+    <figcaption><b>Figure 6.</b> Student dashboard for the demo account, which is not yet enrolled.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.3 Courses</h3><span class="roles">Admin manages · others view</span></div>
+  <p>A course has a name, logo, description, duration in months, study mode (Full Time or Part Time) and qualification type (NVQ-05 or Non-NVQ). NVQ courses list modules per semester, each with a code, for example "Measurements (1020)". Non-NVQ courses use a single module list. These module lists feed every module drop-down in the system.</p>
+  <p>Students see their enrolled course and a catalogue of others, and can open a details window. Course progress is stored per enrollment. Progress can only go up, and when it reaches 100% the server issues a certificate with a unique code that anyone can check at <code>/api/certificates/verify/&lt;code&gt;</code>.</p>
+  <figure>
+    <img src="images/courses.jpg" alt="Courses">
+    <figcaption><b>Figure 7.</b> All Courses (admin): one NVQ-05 full-time course and one non-NVQ part-time course.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.4 Students</h3><span class="roles">Admin manages · instructor and student view</span></div>
+  <p>The admin adds a student with name, email, password, course, batch year, NIC number, MIS number and an optional photo (JPEG, PNG, WEBP or GIF, up to 3 MB). This creates the login account, the student record and the enrollment in one step. A duplicate email is refused. The list filters by course and batch, and the latest batch is selected by default. Instructors see the same list read-only; students see classmates on their own course.</p>
+  <figure class="narrow">
+    <img src="images/students.jpg" alt="Students">
+    <figcaption><b>Figure 8.</b> Student management. Cards show batch, MIS number and course.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.5 Lecturers</h3><span class="roles">Admin manages · others view</span></div>
+  <p>The admin creates lecturer accounts with a lecturer id, a course and the list of modules they teach. This module list is the basis of <b>instructor scoping</b>: an instructor can create, edit, grade or delete assignments, exams and files only for modules on their own list, or items they created themselves.</p>
+  <figure>
+    <img src="images/lecturers.jpg" alt="Lecturers">
+    <figcaption><b>Figure 9.</b> Lecturer records with their course and assigned modules.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.6 Timetable</h3><span class="roles">Admin edits · others view</span></div>
+  <p>Each course has one weekly timetable: Monday to Friday, four teaching periods a day (8.30 to 10.30, 10.45 to 12.15, 12.45 to 2.45 and 2.45 to 4.15), with breakfast and lunch rows between. Each cell is a module chosen from the course's module list. The server stores the grid as JSON and discards anything outside the five days and four periods.</p>
+  <figure class="narrow">
+    <img src="images/timetable.jpg" alt="Timetable">
+    <figcaption><b>Figure 10.</b> Weekly timetable for the Quantity Surveyor course, in edit mode.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.7 Attendance</h3><span class="roles">Admin marks · student views</span></div>
+  <p>Attendance is a monthly grid: one row per student, one column per day. Clicking a cell cycles it in the order not marked, Present (P), Absent (A), Leave (L), then back to not marked; each click is saved at once. Clicking a day header opens a window to mark the whole class for that day. Summary cards count present, absent and leave marks and show the attendance rate.</p>
+  <ul>
+    <li>Future dates are locked, shown with diagonal stripes, and the server rejects them.</li>
+    <li><b>All Present</b> fills a whole month with P, but only for past months, only on weekdays, and only where no mark exists yet.</li>
+    <li><b>Export Excel</b> builds an <code>.xlsx</code> file in the browser, with no server round trip and no spreadsheet library. The code writes the workbook XML and the ZIP container itself.</li>
+  </ul>
+  <figure class="narrow">
+    <img src="images/attendance.jpg" alt="Attendance">
+    <figcaption><b>Figure 11.</b> Attendance sheet for November 2026. Days after "today" are locked.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/attendance-student.jpg" alt="Student attendance">
+    <figcaption><b>Figure 12.</b> Student view of attendance: the same grid, read-only.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.8 Instructor's daily diary</h3><span class="roles">Admin writes · student views</span></div>
+  <p>The diary reproduces the centre's paper form. For a chosen course, date and batch it records the week, the month and four time slots. Each slot has a module, a task, the subject covered and the instructor's signature. The form also has instructor remarks, T/O remarks and a T/O signature. Saved entries load again when the same date is chosen. <b>Print / Export PDF</b> builds print pages for a date range, one page per calendar day (blank where no entry exists), through the browser's print dialog. Ranges longer than 62 days ask for confirmation first.</p>
+  <figure class="narrow">
+    <img src="images/diary.jpg" alt="Daily diary">
+    <figcaption><b>Figure 13.</b> Daily diary form with the four time slots.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.9 Assignments</h3><span class="roles">Admin and instructor create · student submits</span></div>
+  <p>An assignment has a title, course, module, batch, start and end date-time, instructions and an optional PDF brief (up to 15 MB). Its status shows as upcoming, open or closed. Instructors and admins can change the end time, view every submission, preview the files and enter a grade and written feedback.</p>
+  <p>Students see assignments for their batch (or with no batch set). They submit one PDF or image file before the end time; after that the server refuses the upload. Once graded, the student sees the grade and feedback on the same card.</p>
+  <figure class="narrow">
+    <img src="images/assignments-admin.jpg" alt="Assignments, admin">
+    <figcaption><b>Figure 14.</b> Assignments as seen by the admin, with course, module, batch and status tags.</figcaption>
+  </figure>
+  <figure class="narrow">
+    <img src="images/assignments-student.jpg" alt="Assignments, student">
+    <figcaption><b>Figure 15.</b> Assignments as seen by a student. Closed assignments no longer accept submissions.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.10 Exam portal</h3><span class="roles">Admin and instructor open · student uploads</span></div>
+  <p>The exam portal is used for papers written on paper in class. An instructor opens a submission window for a course, module and batch with a start and end time. During the window each student uploads a photo or PDF of their answer sheet, one per exam. After the window closes uploads are refused. Staff can view the papers, extend the end time and grade each one.</p>
+  <figure class="narrow">
+    <img src="images/exams.jpg" alt="Exams">
+    <figcaption><b>Figure 16.</b> Exam portal listing three closed exam windows.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.11 Results</h3><span class="roles">All roles, scoped</span></div>
+  <p>Results combine assignment and exam grades into one matrix for a course, an optional module and a batch. Each row is a student and each column is an assignment or an exam. Colours mark three states: <b>Absent</b> (no submission), <b>Pending</b> (submitted but not graded) and <b>Fail</b> (a numeric mark below 40). The last column counts fails and absences per student, and the footer gives totals per column. Instructors can open results only for modules they teach; students see only their own row.</p>
+  <figure class="narrow">
+    <img src="images/results.jpg" alt="Results">
+    <figcaption><b>Figure 17.</b> Module results matrix for the 2026 batch.</figcaption>
+  </figure>
+  <p>The API also keeps an older four-subject mark sheet (<code>results</code> table) which computes a GPA and letter grade; see section 6.</p>
+
+  <div class="module-head"><h3>5.12 Notes and past papers</h3><span class="roles">Admin and instructor upload · all view</span></div>
+  <p>Both screens work the same way. Staff upload a PDF (up to 15 MB) with a course, module and unit name. Everyone can filter by course and module, preview the PDF inside the app and download it. Delete buttons appear only for the admin, the uploader, or an instructor who teaches that module.</p>
+  <figure class="narrow">
+    <img src="images/notes.jpg" alt="Notes">
+    <figcaption><b>Figure 18.</b> Notes list with preview, download and remove actions.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.13 Announcements</h3><span class="roles">Admin and instructor post · all read and reply</span></div>
+  <p>Announcements are threads with a title and body. Admins and instructors post them; everyone can read them and add replies. Instructors can edit or delete only their own announcements, while the admin can edit or delete any. The five newest announcements also appear on every dashboard.</p>
+  <figure>
+    <img src="images/announcements.jpg" alt="Announcements">
+    <figcaption><b>Figure 19.</b> Announcements list with reply counts.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.14 Career hub</h3><span class="roles">Admin and instructor post · all view</span></div>
+  <p>A board of internships and vacancies, each with a title, type, location, closing date and description.</p>
+  <figure>
+    <img src="images/career.jpg" alt="Career hub">
+    <figcaption><b>Figure 20.</b> Career hub with one internship and one vacancy.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.15 Events</h3><span class="roles">Admin manages · all view</span></div>
+  <p>Events record a name, place, person in charge and date-time, with an optional PDF (for example a circular or programme) and any number of photos. Photos can be added or removed individually later.</p>
+  <figure>
+    <img src="images/events.jpg" alt="Events">
+    <figcaption><b>Figure 21.</b> An event card with a photo gallery (blurred here) and PDF actions.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.16 Profile</h3><span class="roles">All roles, own account</span></div>
+  <p>Users can change their display name and, for students and lecturers, their photo. The password change form asks for the current password and a new one of at least four characters. Students also see their MIS number, NIC and batch; lecturers see their lecturer id and modules.</p>
+  <figure class="narrow">
+    <img src="images/profile.jpg" alt="Profile">
+    <figcaption><b>Figure 22.</b> Profile page with the password change form.</figcaption>
+  </figure>
+
+  <div class="module-head"><h3>5.17 Global search</h3><span class="roles">All roles</span></div>
+  <p>The search box at the top searches assignments and exams. Both lists are loaded once per session (already limited by the user's role) and filtered as the user types, with the match highlighted and keyboard navigation. Choosing a result opens the right page and highlights the item.</p>
+</section>
+
+<!-- ============ 6. BUSINESS RULES ============ -->
+<section class="chapter" style="font-size:9.6pt">
+  <h2><span class="n">6</span>Business rules</h2>
+  <p>The rules below are enforced by the server, so they hold even if someone bypasses the interface.</p>
+
+  <h3>6.1 Accounts</h3>
+  <ul>
+    <li>Emails are unique. Creating a student or lecturer with an email that already exists returns HTTP 409.</li>
+    <li>Passwords must be at least 4 characters and are stored with bcrypt.</li>
+    <li>Creating a student requires name, email, password and course.</li>
+  </ul>
+
+  <h3>6.2 Instructor scoping</h3>
+  <p>An instructor may manage an assignment, exam or resource when any of these is true:</p>
+  <ol>
+    <li>they created it, or</li>
+    <li>they have a lecturer record for its course and the item's module is on that record's module list, or</li>
+    <li>the item has no module and they have a lecturer record for its course.</li>
+  </ol>
+  <p>Lists shown to instructors are filtered by the same rule, and each item carries a flag (<code>can_edit_deadline</code>, <code>can_delete</code>) that the interface uses to show or hide buttons.</p>
+
+  <h3>6.3 Time windows</h3>
+  <table>
+    <tr><th style="width:30%">Action</th><th>Rule</th></tr>
+    <tr><td>Submit assignment</td><td>Refused after <code>end_at</code>. One submission per student per assignment.</td></tr>
+    <tr><td>Upload exam paper</td><td>Refused after the exam's <code>end_at</code>. One paper per student per exam.</td></tr>
+    <tr><td>Mark attendance</td><td>Refused for dates after today.</td></tr>
+    <tr><td>Mark month present</td><td>Past months only; weekdays only; does not overwrite existing marks.</td></tr>
+  </table>
+
+  <h3>6.4 Files</h3>
+  <table>
+    <tr><th style="width:30%">Upload</th><th>Allowed types</th><th style="width:16%">Max size</th></tr>
+    <tr><td>Profile, student, lecturer photos; course logos</td><td>JPEG, PNG, WEBP, GIF</td><td>3 MB</td></tr>
+    <tr><td>Assignment briefs, notes, past papers, event PDF</td><td>PDF</td><td>15 MB</td></tr>
+    <tr><td>Assignment submissions, exam papers</td><td>PDF, JPEG, PNG, WEBP, GIF</td><td>15 MB</td></tr>
+    <tr><td>Event photos</td><td>JPEG, PNG, WEBP, GIF (several per upload)</td><td>15 MB each</td></tr>
+  </table>
+  <p>The file type is checked from the file's contents with PHP's <code>finfo</code>, not from the name or the browser's claim. Files are renamed to a timestamp plus a random number. When a record is replaced or deleted, its old file is removed from disk.</p>
+
+  <h3>6.5 Grades and certificates</h3>
+  <ul>
+    <li>Results matrix: a numeric grade under 40 counts as a fail; a missing submission counts as absent; both add to the fail/absent count.</li>
+    <li>Four-subject mark sheet: average = (measurement + estimation + contracts + CAD) / 4; GPA = average / 100 × 4, rounded to one decimal place. Letter grade: A at 75 and above, B+ at 65, B at 55, C at 45, otherwise D.</li>
+    <li>Course progress never decreases. At 100% a certificate is created once, with code <code>VTA-QS-</code> followed by 8 random hexadecimal characters.</li>
+  </ul>
+</section>
+
+<!-- ============ 7. SECURITY ============ -->
+<section style="margin-top:22pt">
+  <h2><span class="n">7</span>Security and privacy</h2>
+  <table>
+    <tr><th style="width:28%">Concern</th><th>How the system handles it</th></tr>
+    <tr><td>Authentication</td><td>PHP sessions. Cookie is <code>HttpOnly</code> and <code>SameSite=Lax</code>. Session id is regenerated at login.</td></tr>
+    <tr><td>Passwords</td><td>bcrypt via <code>password_hash</code>; never returned by the API (<code>public_user()</code> removes the hash).</td></tr>
+    <tr><td>Authorisation</td><td>Role check on every write; module-level scoping for instructors (section 6.2).</td></tr>
+    <tr><td>SQL injection</td><td>All queries use PDO prepared statements with real (not emulated) prepares.</td></tr>
+    <tr><td>Cross-site scripting</td><td>User text is escaped with an <code>escapeHtml()</code> helper before it is inserted into the page.</td></tr>
+    <tr><td>Uploads</td><td>Content-based type check, size limits, server-generated file names.</td></tr>
+    <tr><td>Configuration</td><td>Database credentials live in <code>.env</code>, which git ignores and Apache refuses to serve. <code>schema.sql</code> is also blocked. <code>setup.php</code> refuses to run from a browser.</td></tr>
+    <tr><td>Error handling</td><td>Unexpected errors are logged on the server; the client receives only a generic message.</td></tr>
+  </table>
+  <h3>7.1 Personal data held</h3>
+  <p>The system stores names, emails, NIC numbers, MIS numbers, photos, attendance, grades and submitted work. Researchers who use a live installation should get permission from the centre and anonymise records before publishing, as was done for the figures in this document.</p>
+</section>
+
+<!-- ============ 8. API ============ -->
+<section class="chapter">
+  <h2><span class="n">8</span>API reference</h2>
+  <p>All paths start with <code>/api</code>. "Login" means any signed-in user. "Scoped" means the instructor rule in section 6.2 applies.</p>
+  <table>
+    <tr><th style="width:9%">Method</th><th style="width:40%">Path</th><th style="width:21%">Who</th><th>Purpose</th></tr>
+    <tr><td>POST</td><td><code>/auth/login</code></td><td>Public</td><td>Sign in</td></tr>
+    <tr><td>POST</td><td><code>/auth/logout</code></td><td>Public</td><td>Sign out</td></tr>
+    <tr><td>GET</td><td><code>/auth/me</code>, <code>/auth/profile</code></td><td>Login</td><td>Current user; profile with student or lecturer details</td></tr>
+    <tr><td>PUT</td><td><code>/auth/profile</code>, <code>/auth/password</code></td><td>Login</td><td>Update name and photo; change password</td></tr>
+    <tr><td>GET</td><td><code>/admin/stats</code></td><td>Admin</td><td>Total students</td></tr>
+    <tr><td>GET</td><td><code>/courses</code></td><td>Public</td><td>Course list</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/courses</code>, <code>/courses/{id}</code></td><td>Admin, instructor</td><td>Create, edit, delete course</td></tr>
+    <tr><td>GET</td><td><code>/courses/mine</code></td><td>Login</td><td>Enrolled or taught courses</td></tr>
+    <tr><td>GET</td><td><code>/courses/{id}/summary</code>, <code>/lecturers</code>, <code>/students</code></td><td>Login</td><td>Counts and people for one course</td></tr>
+    <tr><td>POST</td><td><code>/courses/{id}/enroll</code></td><td>Admin, instructor</td><td>Enroll a user</td></tr>
+    <tr><td>POST</td><td><code>/courses/{id}/progress</code></td><td>Login (enrolled)</td><td>Update progress; may issue certificate</td></tr>
+    <tr><td>GET</td><td><code>/certificates/mine</code></td><td>Login</td><td>Own certificates</td></tr>
+    <tr><td>GET</td><td><code>/certificates/verify/{code}</code></td><td>Public</td><td>Check a certificate code</td></tr>
+    <tr><td>GET</td><td><code>/students</code>, <code>/students/batches</code></td><td>Admin, instructor</td><td>Student list; batch years</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/students</code>, <code>/students/{id}</code></td><td>Admin</td><td>Manage students</td></tr>
+    <tr><td>GET</td><td><code>/lecturers</code></td><td>Admin, instructor</td><td>Lecturer list</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/lecturers</code>, <code>/lecturers/{id}</code></td><td>Admin</td><td>Manage lecturers</td></tr>
+    <tr><td>GET</td><td><code>/lectures</code></td><td>Login</td><td>Lecture records</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/lectures</code>, <code>/lectures/{id}</code></td><td>Admin</td><td>Manage lecture records</td></tr>
+    <tr><td>GET / PUT</td><td><code>/timetable</code></td><td>Login / Admin</td><td>Read / save a course timetable</td></tr>
+    <tr><td>GET</td><td><code>/attendance</code>, <code>/attendance/mine</code></td><td>Login</td><td>Attendance for a month; own attendance</td></tr>
+    <tr><td>PUT</td><td><code>/attendance</code></td><td>Admin, instructor</td><td>Set or clear one mark</td></tr>
+    <tr><td>POST</td><td><code>/attendance/mark-day</code></td><td>Admin, instructor</td><td>Mark all students for a day</td></tr>
+    <tr><td>POST</td><td><code>/attendance/mark-all-present</code></td><td>Admin, instructor</td><td>Fill a past month</td></tr>
+    <tr><td>GET</td><td><code>/diary</code></td><td>Login</td><td>Diary entries</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/diary</code>, <code>/diary/{id}</code></td><td>Admin, instructor</td><td>Manage diary entries</td></tr>
+    <tr><td>GET</td><td><code>/assignments</code></td><td>Login</td><td>List (filtered by role and batch)</td></tr>
+    <tr><td>POST, DELETE</td><td><code>/assignments</code>, <code>/assignments/{id}</code></td><td>Admin, instructor (scoped)</td><td>Create, delete</td></tr>
+    <tr><td>PUT</td><td><code>/assignments/{id}/deadline</code></td><td>Admin, instructor (scoped)</td><td>Change window</td></tr>
+    <tr><td>POST</td><td><code>/assignments/{id}/submit</code></td><td>Student</td><td>Upload work</td></tr>
+    <tr><td>GET</td><td><code>/assignments/{id}/submissions</code></td><td>Admin, instructor (scoped)</td><td>View submissions</td></tr>
+    <tr><td>PUT</td><td><code>/assignments/{id}/submissions/{sid}/grade</code></td><td>Admin, instructor (scoped)</td><td>Grade and feedback</td></tr>
+    <tr><td colspan="4" style="color:var(--muted)">The same seven endpoints exist under <code>/exams</code>, with exam papers in place of assignment work.</td></tr>
+    <tr><td>GET</td><td><code>/results</code></td><td>Login</td><td>Four-subject mark sheet with GPA</td></tr>
+    <tr><td>GET</td><td><code>/results/module</code></td><td>Login (scoped)</td><td>Assignment and exam matrix</td></tr>
+    <tr><td>PUT</td><td><code>/results/{studentId}</code></td><td>Admin, instructor</td><td>Save four-subject marks</td></tr>
+    <tr><td>GET</td><td><code>/resources</code></td><td>Login</td><td>Notes and past papers</td></tr>
+    <tr><td>POST, DELETE</td><td><code>/resources</code>, <code>/resources/{id}</code></td><td>Admin, instructor (scoped)</td><td>Upload, remove</td></tr>
+    <tr><td>GET, POST</td><td><code>/forum/threads</code></td><td>Login / Admin, instructor</td><td>List / post announcements</td></tr>
+    <tr><td>PUT, DELETE</td><td><code>/forum/threads/{id}</code></td><td>Admin, author</td><td>Edit, delete</td></tr>
+    <tr><td>GET, POST</td><td><code>/forum/threads/{id}/replies</code></td><td>Login</td><td>Read, reply</td></tr>
+    <tr><td>GET</td><td><code>/career</code></td><td>Login</td><td>Job listings</td></tr>
+    <tr><td>POST, DELETE</td><td><code>/career</code>, <code>/career/{id}</code></td><td>Admin, instructor</td><td>Post, remove</td></tr>
+    <tr><td>GET</td><td><code>/events</code></td><td>Login</td><td>Events with photos</td></tr>
+    <tr><td>POST, PUT, DELETE</td><td><code>/events</code>, <code>/events/{id}</code>, <code>/events/{id}/photos/{pid}</code></td><td>Admin</td><td>Manage events and photos</td></tr>
+  </table>
+</section>
+
+<!-- ============ 9. INTERFACE ============ -->
+<section class="chapter">
+  <h2><span class="n">9</span>Interface, mobile and Android app</h2>
+  <h3>9.1 Themes</h3>
+  <p>The interface uses CSS design tokens with two themes. Dark is the default: graphite surfaces with crimson used only for main buttons, the active menu item, icons and focus rings. A toggle in the top bar switches to light, and the choice is saved in the browser. Printed pages, such as the diary, always use a white layout.</p>
+  <h3>9.2 Responsive layout</h3>
+  <p>Below 760 pixels wide the sidebar becomes a slide-in menu, cards stack in one column and wide tables such as the attendance grid scroll sideways.</p>
+  <figure>
+    <div class="phones">
+      <img src="images/mobile-dashboard.jpg" alt="Dashboard on a phone">
+      <img src="images/mobile-attendance.jpg" alt="Attendance on a phone">
+    </div>
+    <figcaption style="text-align:center"><b>Figure 23.</b> Dashboard and attendance at phone width (390 px).</figcaption>
+  </figure>
+  <h3>9.3 Loading and feedback</h3>
+  <p>Each page shows skeleton placeholders while data loads. Buttons show a loading state during requests. Results of actions appear as short toast messages, and destructive actions ask for confirmation first.</p>
+  <h3>9.4 Android app</h3>
+  <p>The Android app, named Tech Class, is offered on <code>download.html</code> as a 5.6 MB APK (version 1.8, Android 7.0 or newer). The app shows the web application inside an Android WebView. The web code detects when it runs inside the app and adjusts file downloads and the splash screen. Because a WebView cannot display PDFs on its own, the system renders PDFs with PDF.js onto a canvas, which works the same in the browser and in the app.</p>
+</section>
+
+<!-- ============ 10. LIMITATIONS ============ -->
+<section class="chapter">
+  <h2><span class="n">10</span>Limitations and future work</h2>
+  <p>These points come from reading the code. They are useful for evaluation chapters and as directions for further development.</p>
+  <table>
+    <tr><th style="width:30%">Area</th><th>Observation</th></tr>
+    <tr><td>Password policy</td><td>The minimum length is 4 characters, and there is no limit on failed login attempts.</td></tr>
+    <tr><td>CSRF</td><td>There is no anti-CSRF token. The <code>SameSite=Lax</code> cookie blocks most cross-site writes in modern browsers.</td></tr>
+    <tr><td>Role consistency</td><td>The menu hides Attendance and Daily Diary from instructors, but the API allows instructors to write both.</td></tr>
+    <tr><td>Results model</td><td>The older <code>results</code> table has four fixed subject columns, while courses define modules freely. The module results matrix does not have this limit.</td></tr>
+    <tr><td>Notifications</td><td>No email, SMS or push notifications for new assignments, grades or announcements.</td></tr>
+    <tr><td>Testing</td><td>The repository has no automated tests.</td></tr>
+    <tr><td>Deployment</td><td><code>.htaccess</code> points the 404 page to <code>/404.html</code>, which only works when the app sits at the domain root.</td></tr>
+    <tr><td>External dependency</td><td>PDF preview loads PDF.js from a public CDN, so it needs internet access.</td></tr>
+    <tr><td>Analytics</td><td>No built-in reports beyond counts, attendance rate and the results matrix; data would need exporting for statistical study.</td></tr>
+  </table>
+</section>
+
+<!-- ============ 11. GLOSSARY ============ -->
+<section class="chapter">
+  <h2><span class="n">11</span>Glossary and document maintenance</h2>
+  <table>
+    <tr><th style="width:24%">Term</th><th>Meaning in this system</th></tr>
+    <tr><td>QS</td><td>Quantity Surveying, the discipline the course teaches</td></tr>
+    <tr><td>NVQ-05</td><td>National Vocational Qualification, Level 5; a course qualification type</td></tr>
+    <tr><td>Batch</td><td>The intake year of a group of students, for example 2026</td></tr>
+    <tr><td>MIS number</td><td>Student registration number, for example <code>JG/L5_V1/01/0013</code></td></tr>
+    <tr><td>NIC</td><td>National Identity Card number</td></tr>
+    <tr><td>Module</td><td>A subject inside a course, with a code, for example Estimations (4050)</td></tr>
+    <tr><td>T/O</td><td>The officer who countersigns the daily diary, as labelled on the diary form</td></tr>
+    <tr><td>Scoped</td><td>Limited to the course and modules a lecturer is assigned to</td></tr>
+    <tr><td>Submission window</td><td>The period between an assignment's or exam's start and end time</td></tr>
+  </table>
+
+  <h3>11.1 Updating this document</h3>
+  <p>The PDF is generated from an HTML source kept next to it in the repository:</p>
+  <table>
+    <tr><th style="width:44%">File</th><th>Purpose</th></tr>
+    <tr><td><code>docs/research/research-document.html</code></td><td>The text and layout. Edit this to change the document.</td></tr>
+    <tr><td><code>docs/research/images/</code></td><td>Screenshots used as figures</td></tr>
+    <tr><td><code>docs/research/build-pdf.mjs</code></td><td>Turns the HTML into the PDF using Chrome or Edge</td></tr>
+    <tr><td><code>docs/Research-Document.pdf</code></td><td>The finished PDF</td></tr>
+  </table>
+  <p>To rebuild after an edit, run from the repository root (Node.js 22 or newer and Chrome or Edge installed):</p>
+  <p><code>node docs/research/build-pdf.mjs</code></p>
+  <p>When the system changes, update the version and date on the cover, revise the affected sections and replace any outdated screenshots. Before publishing new screenshots, remove real names and photos.</p>
+</section>
+
+</body>
+</html>
